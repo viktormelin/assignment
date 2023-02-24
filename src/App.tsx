@@ -1,11 +1,33 @@
 import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import './App.css';
+import { Todo } from './models/todoModel';
+import Form from './components/Form';
+import TodoCard from './components/TodoCard';
 
 const App = () => {
-  const [count, setCount] = useState(0);
+  const [todos, setTodos] = useState<Todo[]>([]);
 
-  return <div className='App'></div>;
+  const handleAddTodo = (data: Todo) => {
+    if (data) {
+      const tempTodos = [...todos];
+      tempTodos.push(data);
+      setTodos(tempTodos);
+    }
+  };
+
+  return (
+    <div className='App'>
+      <div className='container'>
+        <div className='container__controls'>
+          <h1>ToDo App</h1>
+          <Form handleAddTodo={handleAddTodo} />
+        </div>
+        <div className='container__content'>
+          {todos && todos.map((todo) => <TodoCard key={todo.uuid} todo={todo} />)}
+          {!todos ? <p>No todos added</p> : null}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default App;
